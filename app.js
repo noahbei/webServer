@@ -20,12 +20,12 @@ async function getData() {
 }
 
 // prepared statement: sending sql and values separately
-async function getAccount(accountID) {
+async function getAccount(userID) {
     const [rows] = await pool.query(`
     SELECT * 
     FROM account 
-    WHERE accountID = ? 
-    `, [accountID])
+    WHERE userID = ? 
+    `, [userID])
     return rows[0]
 }
 
