@@ -8,10 +8,10 @@ const pool = mysql.createPool({
     host: '127.0.0.1',
     user: 'root',
     password: '',
-    database: 'test_database'
+    database: ''
 }).promise()
 
-const result = await pool.query("SELECT * FROM table1")
+const result = await pool.query("SELECT * FROM account")
 console.log(result)
 
 
