@@ -1,18 +1,26 @@
 import express from "express";
 import mysql from "mysql2"
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const app = express();
 const port = 3000
 
 const pool = mysql.createPool({
-    host: '127.0.0.1',
-    user: 'root',
-    password: '',
-    database: ''
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE
 }).promise()
 
-const result = await pool.query("SELECT * FROM account")
-console.log(result)
+async function getData() {
+    const [rows] = await pool.query("SELECT * FROM account")
+    return rows
+}
+
+const data = await getData();
+console.log(data);
 
 
 app.get("/", (req, res) => {
