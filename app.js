@@ -19,9 +19,20 @@ async function getData() {
     return rows
 }
 
-const data = await getData();
-console.log(data);
+// prepared statement: sending sql and values separately
+async function getAccount(accountID) {
+    const [rows] = await pool.query(`
+    SELECT * 
+    FROM account 
+    WHERE accountID = ? 
+    `, [accountID])
+    return rows[0]
+}
 
+//const data = await getData();
+//console.log(data);
+const account = getAccount(1)
+console.log(account)
 
 app.get("/", (req, res) => {
     res.send("server");
