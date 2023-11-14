@@ -29,10 +29,21 @@ async function getAccount(userID) {
     return rows[0]
 }
 
+async function createAccount(a = NULL, b = NULL, c = NULL, d = NULL, e = NULL, f = NULL, g = NULL, h = NULL) {
+    const result = await pool.query(`
+    INSERT INTO account (userID, username, password, age, email, birthdate, gender, name)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `, [a, b, c, d, e, f, g, h])
+    return result
+}
+
 //const data = await getData();
 //console.log(data);
-const account = getAccount(1)
-console.log(account)
+//const account = getAccount(1)
+//console.log(account)
+const result = await createAccount('2', 'jane', 'password', '13', 'this2@email.com', '2010-12-03', 'female', 'jane doe')
+console.log(result)
+
 
 app.get("/", (req, res) => {
     res.send("server");
