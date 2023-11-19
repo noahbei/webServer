@@ -4,14 +4,28 @@ import * as database from "./database.js";
 const app = express();
 const port = 3000
 
+app.use(express.json())
 
 app.get("/", (req, res) => {
     res.send("server running");
 })
 
+app.get("/account-data", async (req, res) => {
+    const accounts = await database.getAccount();
+    res.send(accounts);
+})
+
+app.get("/account-data/:id", async (req, res) => {
+    const id = req.params.id;
+    const account = await database.getAccount(id);
+    res.send(account);
+})
+
 app.post("/account-data", async (req, res) => {
     try {
-        const result = await database.createAccount('2', 'jane', 'password', '13', 'this2@email.com', '2010-12-03', 'female', 'jane doe')
+        //'2', 'jane', 'password', '13', 'this2@email.com', '2010-12-03', 'female', 'jane doe'
+        const {userID, username, password, age, email, birthdate, gender, name} = req.body
+        const result = await database.createAccount(userID, username, password, age, email, birthdate, gender, name)
         console.log(result);
         res.send(result)
     } catch (error) {
