@@ -15,14 +15,24 @@ app.get("/error", (req, res) => {
 })
 
 app.get("/account-data", async (req, res) => {
-    const accounts = await database.getAccount();
-    res.send(accounts);
+    try {
+        const accounts = await database.getData();
+        res.send(accounts);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
 })
 
 app.get("/account-data/:id", async (req, res) => {
-    const id = req.params.id;
-    const account = await database.getAccount(id);
-    res.send(account);
+    try {
+        const id = req.params.id;
+        const account = await database.getAccount(id);
+        res.send(account);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
 })
 
 app.post("/account-data", async (req, res) => {
