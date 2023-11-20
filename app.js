@@ -10,6 +10,10 @@ app.get("/", (req, res) => {
     res.send("server running");
 })
 
+app.get("/error", (req, res) => {
+    res.send("There was an error connecting to the database")
+})
+
 app.get("/account-data", async (req, res) => {
     const accounts = await database.getAccount();
     res.send(accounts);
