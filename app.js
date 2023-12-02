@@ -100,7 +100,12 @@ app.post("/account/login", async (req, res) => {
         console.log("User", Username, "pass", Password)
         const aid = await database.getAccountIDWithAuth(Username, Password);
         console.log(aid)
-        res.send(aid);
+        if (aid !== undefined) {
+            res.send(aid);
+        }
+        else {
+            res.send([-1])
+        }
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Internal Server Error' });
