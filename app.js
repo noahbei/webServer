@@ -59,9 +59,9 @@ app.get("/accounts/:id", async (req, res) => {
 
 app.post("/account-data", async (req, res) => {
     try {
-        //'2', 'jane', 'password', '13', 'this2@email.com', '2010-12-03', 'female', 'jane doe'
-        const {userID, username, password, age, email, birthdate, gender, name} = req.body
-        const result = await database.createAccount(userID, username, password, age, email, birthdate, gender, name)
+        //'your_username', 'your_password', 'John', 'Doe', 25, 'Male', 'john.doe@example.com', 1
+        const {Username, Password, FName, LName, Age, Gender, Email, ProfileID} = req.body
+        const result = await database.createAccount(Username, Password, FName, LName, Age, Gender, Email, ProfileID)
         console.log(result);
         res.send(result)
     } catch (error) {
