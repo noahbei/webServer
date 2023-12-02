@@ -101,7 +101,7 @@ app.post("/accounts", async (req, res) => {
         const {Username, Password, FName, LName, Age, Gender, Email} = req.body
         const [aid] = await database.createAccount(Username, Password, FName, LName, Age, Gender, Email)
         console.log(aid);
-        res.send([aid])
+        res.send([{"AccountID":aid}])
     } catch (error) {
         console.error("Error posting account data: " + error)
         res.send("Error")
@@ -114,7 +114,7 @@ app.post("/profiles", async (req, res) => {
         const [pid] = await database.createProfile(ProfileName, AccountID, Currency, Exp);
         const defaultCards = await database.addDefaultCards(pid);
         console.log(pid);
-        res.send([pid]);
+        res.send([{"ProfileID":pid}]);
     } catch (error) {
         console.error("Error posting profile data: " + error);
         res.status(500).json({ error: 'Internal Server Error' });

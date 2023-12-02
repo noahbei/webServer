@@ -110,9 +110,26 @@ export async function initializeCards(pid, cardsJSON) {
 
 export async function addDefaultCards(pid) {
     const cardsJSON = {
+      //cid: card count
         "1": "3",
         "2": "2",
         "3": "7"
+    }
+    const newCardsJSON = {
+        '17275': '3',
+        '13208': '3',
+        '11865': '3',
+        '18362': '3',
+        '10247': '3',
+        '19843': '3',
+        '25858': '5',
+        '26836': '5',
+        '24487': '5',
+        '28100': '5',
+        '25734': '5',
+        '25281': '5',
+        '25902': '5',
+        '25991': '5'
     }
     await initializeCards(pid, cardsJSON)
 }
