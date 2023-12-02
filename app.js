@@ -57,7 +57,7 @@ app.get("/accounts/:id", async (req, res) => {
     }
 })
 
-app.post("/account-data", async (req, res) => {
+app.post("/accounts", async (req, res) => {
     try {
         //'your_username', 'your_password', 'John', 'Doe', 25, 'Male', 'john.doe@example.com', 1
         const {Username, Password, FName, LName, Age, Gender, Email, ProfileID} = req.body
