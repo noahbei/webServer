@@ -94,6 +94,19 @@ app.get("/accounts/:id", async (req, res) => {
     }
 })
 
+app.post("/account/login", async (req, res) => {
+    try {
+        const {Username, Password} = req.body
+        console.log("User", Username, "pass", Password)
+        const aid = await database.getAccountIDWithAuth(Username, Password);
+        console.log(aid)
+        res.send(aid);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+})
+
 // will need to adapt depending on account-profile relationship
 app.post("/accounts", async (req, res) => {
     try {
@@ -135,4 +148,3 @@ app.listen(port, () => {
     console.log(`Server started on port ${port}`)
 })
 
-// signing with username and password

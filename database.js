@@ -186,3 +186,14 @@ export async function getAccountID(username) {
     return rows[0]
 }
 
+export async function getAccountIDWithAuth(username, password) {
+    const [rows] = await pool.query(`
+    SELECT
+        AccountID
+    FROM
+        account
+    WHERE
+        Username = ? AND Password = ?
+    `, [username, password])
+    return rows[0]
+}
