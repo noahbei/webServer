@@ -26,7 +26,7 @@ app.get("/cards", async (req, res) => {
 
 app.get("/profiles/:pid/cards", async (req, res) => {
     try {
-        const pid = req.params.id;
+        const pid = req.params.pid;
         const cards = await database.getProfileCards(pid);
         res.send(cards);
     } catch (error) {
@@ -39,7 +39,7 @@ app.post("/profiles/:pid/add-card", async (req, res) => {
     try {
         const pid = req.params.pid;
         const { cardID } = req.body;
-        const result = await addCard(pid, cardID);
+        const result = await database.addCard(pid, cardID);
         console.log(result);
         res.send(result);
     } catch (error) {
@@ -96,8 +96,8 @@ app.post("/accounts", async (req, res) => {
 
 app.post("/profiles", async (req, res) => {
     try {
-        const { ProfileName, Currency, Exp } = req.body;
-        const result = await database.createProfile(ProfileName, Currency, Exp);
+        const { ProfileName, AccountID, Currency, Exp } = req.body;
+        const result = await database.createProfile(ProfileName, AccountID, Currency, Exp);
         console.log(result);
         res.send(result);
     } catch (error) {

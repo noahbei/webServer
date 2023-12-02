@@ -46,6 +46,7 @@ export async function createAccount(Username, Password, FName, LName, Age, Gende
     return result
 }
 
+// need to make sure there isn't already a profile named the same under the account
 export async function createProfile(ProfileName, aid, Currency = 0, Exp = 0) {
     const result = await pool.query(`
         INSERT INTO profile (ProfileName, AccountID, Currency, Exp)
@@ -77,18 +78,11 @@ export async function getProfile(profileID) {
 
 export async function getProfileCards(profileID) {
     const [rows] = await pool.query(`
-    SELECT
-        pc.CardID,
-        c.Name AS CardName,
-        c.Description AS CardDescription,
-        pc.CardCount
-    FROM
-        profile_cards pc
-    JOIN
-        cards c ON pc.CardID = c.CardID
-    WHERE
-        pc.ProfileID = ?
-    `, [profileID])
+    SELECT pc.ProfileID, pc.CardID, pc.CardCount, c.Name, c.Description
+    FROM profile_cards pc
+    LEFT JOIN cards c ON pc.CardID = c.CardID
+    WHERE pc.ProfileID = ?
+    `, [profileID]);
     return rows
 }
 
@@ -116,15 +110,16 @@ export async function addCard(pid, cardID) {
       FROM profile_cards
       WHERE ProfileID = ? AND CardID = ?
     `, [pid, cardID]);
-  
-    if (existingRow.length > 0) {
-      const updatedCount = existingRow[0].CardCount + 1;
-      const result = await pool.query(`
-        UPDATE profile_cards
-        SET CardCount = ?
-        WHERE ProfileID = ? AND CardID = ?
-      `, [updatedCount, pid, cardID]);
-      return result;
+
+    if (existingRow[0].length > 0) {
+        const CardCount = Number(existingRow[0][0].CardCount)
+        const updatedCount = CardCount + 1;
+        const result = await pool.query(`
+            UPDATE profile_cards
+            SET CardCount = ?
+            WHERE ProfileID = ? AND CardID = ?
+        `, [updatedCount, pid, cardID]);
+        return result;
     }
     else {
       const result = await pool.query(`
