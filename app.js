@@ -73,8 +73,8 @@ app.post("/accounts", async (req, res) => {
 
 app.post("/profiles", async (req, res) => {
     try {
-        const { Username, Currency, Exp } = req.body;
-        const result = await database.createProfile(Username, Currency, Exp);
+        const { ProfileName, Currency, Exp } = req.body;
+        const result = await database.createProfile(ProfileName, Currency, Exp);
         console.log(result);
         res.send(result);
     } catch (error) {

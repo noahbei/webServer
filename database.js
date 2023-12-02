@@ -41,11 +41,11 @@ export async function createAccount(Username, Password, FName, LName, Age, Gende
     return result
 }
 
-export async function createProfile(Username, aid, Currency = 0, Exp = 0) {
+export async function createProfile(ProfileName, aid, Currency = 0, Exp = 0) {
     const result = await pool.query(`
-        INSERT INTO profile (Username, AccountID, Currency, Exp)
+        INSERT INTO profile (ProfileName, AccountID, Currency, Exp)
         VALUES (?, ?, ?, ?);
-    `, [Username, aid, Currency, Exp]);
+    `, [ProfileName, aid, Currency, Exp]);
     return result;
 }
 
@@ -87,15 +87,15 @@ export async function getProfileCards(profileID) {
     return rows
 }
 
-export async function getProfileID(username) {
+export async function getProfileID(profileName) {
     const [rows] = await pool.query(`
     SELECT
         ProfileID
     FROM
         profile
     WHERE
-        Username = ?
-    `, [username])
+        ProfileName = ?
+    `, [profileName])
     return rows[0]
 }
 
