@@ -87,6 +87,50 @@ export async function getProfileCards(profileID) {
     return rows
 }
 
+/* export async function addCards(pid, cardsJSON) {
+    const results = []
+    
+    const testObj = {
+        //cardID : count
+        "1234": "3",
+        "1235": "2",
+        "1236": "7",
+    }
+    
+    const result = await pool.query(`
+        INSERT INTO profile_cards (ProfileID, CardID, CardCount)
+        VALUES (?, ?, ?);
+    `, [pid, cardList, cardCount]);
+    results.push(result)
+    return results;
+} */
+
+export async function addCard(pid, cardID) {
+    const existingRow = await pool.query(`
+      SELECT CardCount
+      FROM profile_cards
+      WHERE ProfileID = ? AND CardID = ?
+    `, [pid, cardID]);
+  
+    if (existingRow.length > 0) {
+      const updatedCount = existingRow[0].CardCount + 1;
+      const result = await pool.query(`
+        UPDATE profile_cards
+        SET CardCount = ?
+        WHERE ProfileID = ? AND CardID = ?
+      `, [updatedCount, pid, cardID]);
+      return result;
+    }
+    else {
+      const result = await pool.query(`
+        INSERT INTO profile_cards (ProfileID, CardID, CardCount)
+        VALUES (?, ?, 1);
+      `, [pid, cardID]);
+      return result;
+    }
+}
+
+// what if mulitple people have same prof name
 export async function getProfileID(profileName) {
     const [rows] = await pool.query(`
     SELECT
@@ -99,6 +143,7 @@ export async function getProfileID(profileName) {
     return rows[0]
 }
 
+// what if multiple people have same account username
 export async function getAccountID(username) {
     const [rows] = await pool.query(`
     SELECT

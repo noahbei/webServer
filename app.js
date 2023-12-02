@@ -25,6 +25,19 @@ app.get("/profiles/:pid/cards", async (req, res) => {
     }
 })
 
+app.post("/profiles/:pid/add-card", async (req, res) => {
+    try {
+        const pid = req.params.pid;
+        const { cardID } = req.body;
+        const result = await addCard(pid, cardID);
+        console.log(result);
+        res.send(result);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 app.get("/profiles/:pid", async (req, res) => {
     try {
         const pid = req.params.id;
