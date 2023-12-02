@@ -57,6 +57,7 @@ app.get("/accounts/:id", async (req, res) => {
     }
 })
 
+// will need to adapt depending on account-profile relationship
 app.post("/accounts", async (req, res) => {
     try {
         //'your_username', 'your_password', 'John', 'Doe', 25, 'Male', 'john.doe@example.com', 1

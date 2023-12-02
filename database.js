@@ -41,19 +41,20 @@ export async function createAccount(Username, Password, FName, LName, Age, Gende
     return result
 }
 
-export async function createProfile(Username, Currency = 0, Exp = 0) {
+export async function createProfile(Username, aid, Currency = 0, Exp = 0) {
     const result = await pool.query(`
-        INSERT INTO profile (Username, Currency, Exp)
-        VALUES (?, ?, ?);
-    `, [Username, Currency, Exp]);
+        INSERT INTO profile (Username, AccountID, Currency, Exp)
+        VALUES (?, ?, ?, ?);
+    `, [Username, aid, Currency, Exp]);
     return result;
 }
 
-export async function createProfileWithID(aid, Username, Currency = 0, Exp = 0) {
+export async function appendPIdToAccount(AccountID, ProfileID) {
     const result = await pool.query(`
-        INSERT INTO profile (Username, Currency, Exp)
-        VALUES (?, ?, ?);
-    `, [aid, Username, Currency, Exp]);
+        UPDATE account
+        SET ProfileID = ?
+        WHERE AccountID = ?;
+    `, [ProfileID, AccountID]);
     return result;
 }
 
@@ -86,17 +87,27 @@ export async function getProfileCards(profileID) {
     return rows
 }
 
-export async function getProfileID(username, password) {
+export async function getProfileID(username) {
     const [rows] = await pool.query(`
     SELECT
-        p.ProfileID
+        ProfileID
     FROM
-        account a
-    JOIN
-        profile p ON a.ProfileID = p.ProfileID
+        profile
     WHERE
-        a.Username = ? AND
-        a.Password = ?
-    `, [username, password])
+        Username = ?
+    `, [username])
     return rows[0]
 }
+
+export async function getAccountID(username) {
+    const [rows] = await pool.query(`
+    SELECT
+        AccountID
+    FROM
+        account
+    WHERE
+        Username = ?
+    `, [username])
+    return rows[0]
+}
+
