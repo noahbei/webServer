@@ -48,6 +48,20 @@ app.post("/profiles/:pid/add-card", async (req, res) => {
     }
 });
 
+// only use once if we want to insert card values into a user's profile
+app.post("/profiles/:pid/initialize-cards", async (req, res) => {
+    try {
+        const pid = req.params.pid;
+        const cardsJSON = req.body;
+        const result = await database.initializeCards(pid, cardsJSON);
+        console.log(result);
+        res.send(result);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 app.get("/profiles/:pid", async (req, res) => {
     try {
         const pid = req.params.id;
@@ -85,9 +99,9 @@ app.post("/accounts", async (req, res) => {
     try {
         //'your_username', 'your_password', 'John', 'Doe', 25, 'Male', 'john.doe@example.com', 1
         const {Username, Password, FName, LName, Age, Gender, Email} = req.body
-        const result = await database.createAccount(Username, Password, FName, LName, Age, Gender, Email)
-        console.log(result);
-        res.send(result)
+        const [aid] = await database.createAccount(Username, Password, FName, LName, Age, Gender, Email)
+        console.log(aid);
+        res.send([aid])
     } catch (error) {
         console.error("Error posting account data: " + error)
         res.send("Error")
@@ -97,10 +111,10 @@ app.post("/accounts", async (req, res) => {
 app.post("/profiles", async (req, res) => {
     try {
         const { ProfileName, AccountID, Currency, Exp } = req.body;
-        const result = await database.createProfile(ProfileName, AccountID, Currency, Exp);
-        // add cards to account
-        console.log(result);
-        res.send(result);
+        const [pid] = await database.createProfile(ProfileName, AccountID, Currency, Exp);
+        const defaultCards = await database.addDefaultCards(pid);
+        console.log(pid);
+        res.send([pid]);
     } catch (error) {
         console.error("Error posting profile data: " + error);
         res.status(500).json({ error: 'Internal Server Error' });

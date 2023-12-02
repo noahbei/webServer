@@ -88,23 +88,34 @@ export async function getProfileCards(profileID) {
     return rows
 }
 
-/* export async function addCards(pid, cardsJSON) {
+export async function initializeCards(pid, cardsJSON) {
     const results = []
-    
     const testObj = {
         //cardID : count
         "1234": "3",
         "1235": "2",
         "1236": "7",
     }
+    for (const cardID in cardsJSON) {
+        const cardCount = Number(cardsJSON[cardID])
+        const result = await pool.query(`
+            INSERT INTO profile_cards (ProfileID, CardID, CardCount)
+            VALUES (?, ?, ?);
+        `, [pid, cardID, cardCount]);
+        results.push(result)
+    }
     
-    const result = await pool.query(`
-        INSERT INTO profile_cards (ProfileID, CardID, CardCount)
-        VALUES (?, ?, ?);
-    `, [pid, cardList, cardCount]);
-    results.push(result)
     return results;
-} */
+}
+
+export async function addDefaultCards(pid) {
+    const cardsJSON = {
+        "1": "3",
+        "2": "2",
+        "3": "7"
+    }
+    await initializeCards(pid, cardsJSON)
+}
 
 export async function addCard(pid, cardID) {
     const existingRow = await pool.query(`
