@@ -21,6 +21,11 @@ export async function getProfiles() {
     return rows
 }
 
+export async function getCards() {
+    const [rows] = await pool.query("SELECT * FROM cards")
+    return rows
+}
+
 export async function getAccount(aid) {
     const [rows] = await pool.query(`
     SELECT

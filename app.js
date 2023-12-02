@@ -14,6 +14,16 @@ app.get("/error", (req, res) => {
     res.send("There was an error connecting to the database")
 })
 
+app.get("/cards", async (req, res) => {
+    try {
+        const cards = await database.getCards();
+        res.send(cards);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+})
+
 app.get("/profiles/:pid/cards", async (req, res) => {
     try {
         const pid = req.params.id;
