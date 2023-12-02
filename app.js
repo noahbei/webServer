@@ -60,13 +60,35 @@ app.get("/accounts/:id", async (req, res) => {
 app.post("/accounts", async (req, res) => {
     try {
         //'your_username', 'your_password', 'John', 'Doe', 25, 'Male', 'john.doe@example.com', 1
-        const {Username, Password, FName, LName, Age, Gender, Email, ProfileID} = req.body
-        const result = await database.createAccount(Username, Password, FName, LName, Age, Gender, Email, ProfileID)
+        const {Username, Password, FName, LName, Age, Gender, Email} = req.body
+        const result = await database.createAccount(Username, Password, FName, LName, Age, Gender, Email)
         console.log(result);
         res.send(result)
     } catch (error) {
         console.error("Error posting account data: " + error)
         res.send("Error")
+    }
+})
+
+app.post("/profiles", async (req, res) => {
+    try {
+        const { Username, Currency, Exp } = req.body;
+        const result = await database.createProfile(Username, Currency, Exp);
+        console.log(result);
+        res.send(result);
+    } catch (error) {
+        console.error("Error posting profile data: " + error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get("/profiles-all", async (req, res) => {
+    try {
+        const profiles = await database.getProfiles();
+        res.send(profiles);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 })
 

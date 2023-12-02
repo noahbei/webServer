@@ -16,6 +16,11 @@ export async function getAccounts() {
     return rows
 }
 
+export async function getProfiles() {
+    const [rows] = await pool.query("SELECT * FROM profile")
+    return rows
+}
+
 export async function getAccount(aid) {
     const [rows] = await pool.query(`
     SELECT
@@ -28,12 +33,28 @@ export async function getAccount(aid) {
     return rows[0]
 }
 
-export async function createAccount(Username, Password, FName, LName, Age, Gender, Email, ProfileID) {
+export async function createAccount(Username, Password, FName, LName, Age, Gender, Email) {
     const result = await pool.query(`
-    INSERT INTO account (Username, Password, FName, LName, Age, Gender, Email, ProfileID)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-    `, [Username, Password, FName, LName, Age, Gender, Email, ProfileID])
+    INSERT INTO account (Username, Password, FName, LName, Age, Gender, Email)
+    VALUES (?, ?, ?, ?, ?, ?, ?);
+    `, [Username, Password, FName, LName, Age, Gender, Email])
     return result
+}
+
+export async function createProfile(Username, Currency = 0, Exp = 0) {
+    const result = await pool.query(`
+        INSERT INTO profile (Username, Currency, Exp)
+        VALUES (?, ?, ?);
+    `, [Username, Currency, Exp]);
+    return result;
+}
+
+export async function createProfileWithID(aid, Username, Currency = 0, Exp = 0) {
+    const result = await pool.query(`
+        INSERT INTO profile (Username, Currency, Exp)
+        VALUES (?, ?, ?);
+    `, [aid, Username, Currency, Exp]);
+    return result;
 }
 
 export async function getProfile(profileID) {
