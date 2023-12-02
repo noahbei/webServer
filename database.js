@@ -109,13 +109,13 @@ export async function initializeCards(pid, cardsJSON) {
 }
 
 export async function addDefaultCards(pid) {
-    const cardsJSON = {
+    const testCardsJSON = {
       //cid: card count
         "1": "3",
         "2": "2",
         "3": "7"
     }
-    const newCardsJSON = {
+    const cardsJSON = {
         '17275': '3',
         '13208': '3',
         '11865': '3',
