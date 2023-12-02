@@ -98,6 +98,7 @@ app.post("/profiles", async (req, res) => {
     try {
         const { ProfileName, AccountID, Currency, Exp } = req.body;
         const result = await database.createProfile(ProfileName, AccountID, Currency, Exp);
+        // add cards to account
         console.log(result);
         res.send(result);
     } catch (error) {
@@ -119,3 +120,5 @@ app.get("/profiles-all", async (req, res) => {
 app.listen(port, () => {
     console.log(`Server started on port ${port}`)
 })
+
+// signing with username and password

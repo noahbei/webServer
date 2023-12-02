@@ -43,7 +43,8 @@ export async function createAccount(Username, Password, FName, LName, Age, Gende
     INSERT INTO account (Username, Password, FName, LName, Age, Gender, Email)
     VALUES (?, ?, ?, ?, ?, ?, ?);
     `, [Username, Password, FName, LName, Age, Gender, Email])
-    return result
+    // return the AID
+    return [result[0].insertId];
 }
 
 // need to make sure there isn't already a profile named the same under the account
@@ -52,7 +53,8 @@ export async function createProfile(ProfileName, aid, Currency = 0, Exp = 0) {
         INSERT INTO profile (ProfileName, AccountID, Currency, Exp)
         VALUES (?, ?, ?, ?);
     `, [ProfileName, aid, Currency, Exp]);
-    return result;
+    // returns the PID
+    return [result[0].insertId];
 }
 
 export async function appendPIdToAccount(AccountID, ProfileID) {
@@ -131,15 +133,15 @@ export async function addCard(pid, cardID) {
 }
 
 // what if mulitple people have same prof name
-export async function getProfileID(profileName) {
+export async function getProfileID(profileName, aid) {
     const [rows] = await pool.query(`
     SELECT
         ProfileID
     FROM
         profile
     WHERE
-        ProfileName = ?
-    `, [profileName])
+        ProfileName = ? AND AccountID = ?
+    `, [profileName, aid])
     return rows[0]
 }
 
