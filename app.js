@@ -126,6 +126,8 @@ app.post("/accounts", async (req, res) => {
     }
 })
 
+// need to cap number of profiles to 3
+// make sure that there is not already a profile of the same name belonging to the same account
 app.post("/profiles", async (req, res) => {
     try {
         const { ProfileName, AccountID, Currency, Exp } = req.body;
