@@ -113,6 +113,7 @@ app.post("/account/login", async (req, res) => {
 })
 
 // will need to adapt depending on account-profile relationship
+// probably make it so that each username is unique
 app.post("/accounts", async (req, res) => {
     try {
         //'your_username', 'your_password', 'John', 'Doe', 25, 'Male', 'john.doe@example.com', 1
