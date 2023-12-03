@@ -161,15 +161,15 @@ export async function addCard(pid, cardID) {
 }
 
 // what if mulitple people have same prof name
-export async function getProfileID(profileName, aid) {
+export async function getProfileID(aid) {
     const [rows] = await pool.query(`
     SELECT
         ProfileID
     FROM
         profile
     WHERE
-        ProfileName = ? AND AccountID = ?
-    `, [profileName, aid])
+        AccountID = ?
+    `, [aid])
     return rows[0]
 }
 

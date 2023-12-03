@@ -149,6 +149,17 @@ app.get("/profiles-all", async (req, res) => {
     }
 })
 
+app.get("/profiles/accountid/:aid", async (req, res) => {
+    try {
+        const aid = req.params.aid;
+        const profile = await database.getProfileID(aid);
+        res.send(profile);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+})
+
 app.listen(port, () => {
     console.log(`Server started on port ${port}`)
 })
