@@ -90,12 +90,6 @@ export async function getProfileCards(profileID) {
 
 export async function initializeCards(pid, cardsJSON) {
     const results = []
-    const testObj = {
-        //cardID : count
-        "1234": "3",
-        "1235": "2",
-        "1236": "7",
-    }
     for (const cardID in cardsJSON) {
         const cardCount = Number(cardsJSON[cardID])
         const result = await pool.query(`
@@ -109,12 +103,6 @@ export async function initializeCards(pid, cardsJSON) {
 }
 
 export async function addDefaultCards(pid) {
-    const testCardsJSON = {
-      //cid: card count
-        "1": "3",
-        "2": "2",
-        "3": "7"
-    }
     const cardsJSON = {
         '17275': '3',
         '13208': '3',
