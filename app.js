@@ -14,6 +14,7 @@ app.get("/error", (req, res) => {
     res.send("There was an error connecting to the database")
 })
 
+// handles getting all the cards available in the game
 app.get("/cards", async (req, res) => {
     try {
         const cards = await database.getCards();
@@ -24,6 +25,7 @@ app.get("/cards", async (req, res) => {
     }
 })
 
+// handles getting all the cards that a profile owns this
 app.get("/profiles/:pid/cards", async (req, res) => {
     try {
         const pid = req.params.pid;
@@ -35,6 +37,7 @@ app.get("/profiles/:pid/cards", async (req, res) => {
     }
 })
 
+// given a card id and profile id, add a single card to a profile
 app.post("/profiles/:pid/add-card", async (req, res) => {
     try {
         const pid = req.params.pid;
@@ -48,6 +51,7 @@ app.post("/profiles/:pid/add-card", async (req, res) => {
     }
 });
 
+// given a list of cards and a profile id, add all the cards into the profile
 // only use once if we want to insert card values into a user's profile
 app.post("/profiles/:pid/initialize-cards", async (req, res) => {
     try {
@@ -62,6 +66,7 @@ app.post("/profiles/:pid/initialize-cards", async (req, res) => {
     }
 });
 
+// handles getting information about a profile given its profile id
 app.get("/profiles/:pid", async (req, res) => {
     try {
         const pid = req.params.id;
@@ -73,6 +78,7 @@ app.get("/profiles/:pid", async (req, res) => {
     }
 })
 
+// gets all of the accounts in the database and their associated information
 app.get("/accounts-all", async (req, res) => {
     try {
         const accounts = await database.getAccounts();
@@ -83,6 +89,7 @@ app.get("/accounts-all", async (req, res) => {
     }
 })
 
+// given an account id, gets the information associated with the account
 app.get("/accounts/:id", async (req, res) => {
     try {
         const aid = req.params.id;
@@ -94,6 +101,7 @@ app.get("/accounts/:id", async (req, res) => {
     }
 })
 
+// given the username and password of an account, creates the account
 app.post("/account/login", async (req, res) => {
     try {
         const {Username, Password} = req.body
@@ -127,7 +135,7 @@ app.post("/accounts", async (req, res) => {
     }
 })
 
-// need to cap number of profiles to 3
+// need to cap number of profiles to 3 in future
 // make sure that there is not already a profile of the same name belonging to the same account
 app.post("/profiles", async (req, res) => {
     try {
@@ -142,6 +150,7 @@ app.post("/profiles", async (req, res) => {
     }
 });
 
+// gets all of the profiles in the database and associated information
 app.get("/profiles-all", async (req, res) => {
     try {
         const profiles = await database.getProfiles();
@@ -152,6 +161,7 @@ app.get("/profiles-all", async (req, res) => {
     }
 })
 
+// gets the profiles that are associated with the account given an aid
 app.get("/profiles/accountid/:aid", async (req, res) => {
     try {
         const aid = req.params.aid;
